@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KSSH Asset Manager</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="background-glow"></div>
+
+<div class="login-container">
+    <div class="login-card">
+
+        <div class="logo-section">
+            <h1>KSSH</h1>
+            <p>Asset Manager</p>
+        </div>
+
+        <h2>Welcome Back</h2>
+        <p class="subtitle">
+            Sign in with your student ID or tap your NFC badge.
+        </p>
+
+        <form id="loginForm">
+            <label for="studentId">Student ID</label>
+
+            <input
+                type="text"
+                id="studentId"
+                placeholder="Enter Student ID"
+                autocomplete="off"
+                required
+            >
+
+            <button type="submit">
+                Continue
+            </button>
+        </form>
+
+        <div class="divider">
+            <span>OR</span>
+        </div>
+
+        <div class="nfc-card">
+            <div class="nfc-icon">📶</div>
+            <h3>Tap NFC Badge</h3>
+            <p>Scan your badge to sign in instantly.</p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const studentId = document.getElementById("studentId").value.trim();
+
+    if (!studentId) {
+        alert("Please enter your Student ID.");
+        return;
+    }
+
+    localStorage.setItem("studentId", studentId);
+
+    // Future page
+    window.location.href = "checkout.html";
+});
+</script>
+
+</body>
+</html>

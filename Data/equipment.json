@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "asset_tag": "CAM-001",
+    "name": "Sony FX30",
+    "category": "Camera",
+    "nfc_uid": "0499887766",
+    "status": "available"
+  }
+]

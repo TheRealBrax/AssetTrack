@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="background-glow"></div>
+
+<div class="dashboard">
+
+    <header class="topbar">
+        <div>
+            <h1>Admin Dashboard</h1>
+            <p>KSSH Asset Manager</p>
+        </div>
+
+        <div class="student-badge">
+            <span>Status</span>
+            <strong>Administrator</strong>
+        </div>
+    </header>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <h2>127</h2>
+            <p>Total Assets</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>98</h2>
+            <p>Available</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>29</h2>
+            <p>Checked Out</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>3</h2>
+            <p>Overdue</p>
+        </div>
+
+    </div>
+
+    <div class="admin-grid">
+
+        <div class="admin-panel">
+
+            <div class="panel-header">
+                <h2>Equipment Search</h2>
+            </div>
+
+            <input
+                type="text"
+                placeholder="Search equipment..."
+                class="search-box"
+            >
+
+            <div class="equipment-list">
+
+                <div class="equipment-card">
+                    <div>
+                        <strong>CAM-001</strong>
+                        <p>Sony Camera</p>
+                    </div>
+
+                    <span class="status available">
+                        Available
+                    </span>
+                </div>
+
+                <div class="equipment-card">
+                    <div>
+                        <strong>MIC-002</strong>
+                        <p>Wireless Microphone</p>
+                    </div>
+
+                    <span class="status checkedout">
+                        Checked Out
+                    </span>
+                </div>
+
+                <div class="equipment-card">
+                    <div>
+                        <strong>BAT-005</strong>
+                        <p>Battery Pack</p>
+                    </div>
+
+                    <span class="status overdue">
+                        Overdue
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="admin-panel">
+
+            <div class="panel-header">
+                <h2>Recent Activity</h2>
+            </div>
+
+            <div class="activity-feed">
+
+                <div class="activity-item">
+                    <strong>Braxton</strong>
+                    checked out CAM-001
+                    <small>2 minutes ago</small>
+                </div>
+
+                <div class="activity-item">
+                    <strong>Alex</strong>
+                    returned MIC-002
+                    <small>14 minutes ago</small>
+                </div>
+
+                <div class="activity-item">
+                    <strong>Jordan</strong>
+                    checked out TRI-001
+                    <small>32 minutes ago</small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+

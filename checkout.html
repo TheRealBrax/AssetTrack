@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Checkout</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="background-glow"></div>
+
+<div class="dashboard">
+
+    <header class="topbar">
+        <div>
+            <h1>Equipment Checkout</h1>
+            <p>Broadcast Asset Management</p>
+        </div>
+
+        <div class="student-badge">
+            <span>Student</span>
+            <strong id="studentName">Loading...</strong>
+        </div>
+    </header>
+
+    <div class="checkout-grid">
+
+        <div class="scan-panel">
+            <h2>Scan Equipment</h2>
+
+            <div class="scan-box">
+                <div class="scan-icon">📶</div>
+                <h3>Ready to Scan</h3>
+                <p>Tap an NFC tag to add equipment.</p>
+            </div>
+
+            <button id="fakeScanBtn">
+                Simulate Scan
+            </button>
+        </div>
+
+        <div class="equipment-panel">
+            <div class="panel-header">
+                <h2>Equipment List</h2>
+                <span id="itemCount">0 Items</span>
+            </div>
+
+            <div id="equipmentList" class="equipment-list">
+
+            </div>
+
+            <button class="checkout-btn">
+                Check Out Equipment
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+const studentId =
+    localStorage.getItem("studentId") || "Unknown";
+
+document.getElementById("studentName")
+.textContent = studentId;
+
+const equipment = [];
+
+function renderEquipment() {
+
+    const list =
+        document.getElementById("equipmentList");
+
+    const count =
+        document.getElementById("itemCount");
+
+    list.innerHTML = "";
+
+    equipment.forEach((item, index) => {
+
+        const card = document.createElement("div");
+
+        card.className = "equipment-card";
+
+        card.innerHTML = `
+            <div>
+                <strong>${item}</strong>
+            </div>
+
+            <button onclick="removeItem(${index})">
+                Remove
+            </button>
+        `;
+
+        list.appendChild(card);
+    });
+
+    count.textContent =
+        `${equipment.length} Item${equipment.length !== 1 ? 's' : ''}`;
+}
+
+function removeItem(index) {
+    equipment.splice(index, 1);
+    renderEquipment();
+}
+
+document
+.getElementById("fakeScanBtn")
+.addEventListener("click", () => {
+
+    const demoItems = [
+        "CAM-001",
+        "BAT-003",
+        "MIC-002",
+        "TRI-001",
+        "XLR-005"
+    ];
+
+    const random =
+        demoItems[Math.floor(Math.random() * demoItems.length)];
+
+    equipment.push(random);
+
+    renderEquipment();
+});
+
+renderEquipment();
+</script>
+
+</body>
+</html>
+
