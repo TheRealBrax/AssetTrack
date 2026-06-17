@@ -37,9 +37,13 @@
                 <p>Tap an NFC tag to add equipment.</p>
             </div>
 
-            <button id="fakeScanBtn">
-                Simulate Scan
+            <button type="button" id="scanNfcBtn">
+                Scan NFC Tag
             </button>
+
+            <p id="scanStatus" class="status-text">
+                Point the device at an NFC asset tag.
+            </p>
         </div>
 
         <div class="equipment-panel">
@@ -61,75 +65,7 @@
 
 </div>
 
-<script>
-const studentId =
-    localStorage.getItem("studentId") || "Unknown";
-
-document.getElementById("studentName")
-.textContent = studentId;
-
-const equipment = [];
-
-function renderEquipment() {
-
-    const list =
-        document.getElementById("equipmentList");
-
-    const count =
-        document.getElementById("itemCount");
-
-    list.innerHTML = "";
-
-    equipment.forEach((item, index) => {
-
-        const card = document.createElement("div");
-
-        card.className = "equipment-card";
-
-        card.innerHTML = `
-            <div>
-                <strong>${item}</strong>
-            </div>
-
-            <button onclick="removeItem(${index})">
-                Remove
-            </button>
-        `;
-
-        list.appendChild(card);
-    });
-
-    count.textContent =
-        `${equipment.length} Item${equipment.length !== 1 ? 's' : ''}`;
-}
-
-function removeItem(index) {
-    equipment.splice(index, 1);
-    renderEquipment();
-}
-
-document
-.getElementById("fakeScanBtn")
-.addEventListener("click", () => {
-
-    const demoItems = [
-        "CAM-001",
-        "BAT-003",
-        "MIC-002",
-        "TRI-001",
-        "XLR-005"
-    ];
-
-    const random =
-        demoItems[Math.floor(Math.random() * demoItems.length)];
-
-    equipment.push(random);
-
-    renderEquipment();
-});
-
-renderEquipment();
-</script>
+<script src="checkout.js"></script>
 
 </body>
 </html>

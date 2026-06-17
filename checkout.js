@@ -9,9 +9,41 @@ if (!student) {
 
 document.getElementById(
     "studentName"
-).textContent = student.name;
+).textContent = student.name || student.student_id;
+
+const equipmentUrl = "Data/equipment.json";
+
+let equipmentRecordsPromise;
 
 const equipment = [];
+
+function setStatus(message) {
+    const status = document.getElementById("scanStatus");
+
+    if (status) {
+        status.textContent = message;
+    }
+}
+
+async function loadEquipmentRecords() {
+    if (!equipmentRecordsPromise) {
+        equipmentRecordsPromise = fetch(equipmentUrl).then((response) => {
+            if (!response.ok) {
+                throw new Error("Unable to load equipment records");
+            }
+
+            return response.json();
+        });
+    }
+
+    return equipmentRecordsPromise;
+}
+
+async function findEquipmentByNfcUid(nfcUid) {
+    const records = await loadEquipmentRecords();
+
+    return records.find((item) => item.nfc_uid === nfcUid) || null;
+}
 
 function renderEquipment() {
 
@@ -51,7 +83,7 @@ function renderEquipment() {
     });
 
     count.textContent =
-        `${equipment.length} Items`;
+        `${equipment.length} Item${equipment.length === 1 ? "" : "s"}`;
 }
 
 window.removeItem = (index) => {
@@ -61,65 +93,88 @@ window.removeItem = (index) => {
     renderEquipment();
 };
 
-async function addEquipment(assetTag) {
-
-    const response =
-        await fetch(
-            `/api/equipment/${assetTag}`
-        );
-
-    if (!response.ok) {
-        alert("Equipment not found");
+function addEquipment(item) {
+    if (equipment.some((existing) => existing.asset_tag === item.asset_tag)) {
+        setStatus(`${item.asset_tag} is already in the list.`);
         return;
     }
 
-    const item =
-        await response.json();
-
     equipment.push(item);
-
+    setStatus(`Added ${item.asset_tag}.`);
     renderEquipment();
 }
 
 document
-.getElementById("fakeScanBtn")
-.addEventListener("click", () => {
+    .getElementById("scanNfcBtn")
+    .addEventListener("click", async () => {
 
-    addEquipment("CAM-001");
+        if (!("NDEFReader" in window)) {
+            setStatus("NFC is not supported on this browser.");
+            return;
+        }
 
-});
+        const reader = new NDEFReader();
+
+        try {
+            setStatus("Ready to scan an asset tag.");
+
+            reader.addEventListener("reading", async (event) => {
+                try {
+                    const item = await findEquipmentByNfcUid(event.serialNumber);
+
+                    if (!item) {
+                        setStatus("Asset tag not recognized.");
+                        return;
+                    }
+
+                    addEquipment(item);
+                } catch (error) {
+                    console.error(error);
+                    setStatus("Could not resolve that tag.");
+                }
+            });
+
+            reader.addEventListener("readingerror", () => {
+                setStatus("NFC scan failed. Try again.");
+            });
+
+            await reader.scan();
+            setStatus("Scan the tag now.");
+        } catch (error) {
+            console.error(error);
+
+            if (error.name === "NotAllowedError") {
+                setStatus("NFC access was blocked by the browser.");
+                return;
+            }
+
+            setStatus("Unable to start NFC scanning.");
+        }
+    });
 
 document
 .querySelector(".checkout-btn")
 .addEventListener("click", async () => {
 
-    const response =
-        await fetch(
-            "/api/checkout",
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type":
-                    "application/json"
-                },
-
-                body: JSON.stringify({
-                    student_id:
-                        student.student_id,
-
-                    equipment:
-                        equipment.map(
-                            e => e.asset_tag
-                        )
-                })
-            }
-        );
-
-    if (!response.ok) {
-        alert("Checkout failed");
+    if (!equipment.length) {
+        alert("Scan at least one item first");
         return;
     }
+
+    const transactions =
+        JSON.parse(localStorage.getItem("transactions") || "[]");
+
+    transactions.push({
+        student_id: student.student_id,
+        student_name: student.name,
+        equipment: equipment.map((item) => item.asset_tag),
+        checked_out_at: new Date().toISOString()
+    });
+
+    localStorage.setItem(
+        "transactions",
+        JSON.stringify(transactions)
+    );
 
     alert("Equipment checked out!");
 
@@ -127,5 +182,13 @@ document
 
     renderEquipment();
 
+    setStatus("Scan another tag to add more equipment.");
+
 });
+
+if (!("NDEFReader" in window)) {
+    setStatus("NFC scanning requires a supported mobile browser.");
+}
+
+renderEquipment();
 

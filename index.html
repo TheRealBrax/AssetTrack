@@ -48,28 +48,18 @@
             <div class="nfc-icon">📶</div>
             <h3>Tap NFC Badge</h3>
             <p>Scan your badge to sign in instantly.</p>
+            <button type="button" id="scanNfcBtn">
+                Scan NFC Badge
+            </button>
+            <p id="nfcStatus" class="status-text">
+                Use a badge or enter your ID manually.
+            </p>
         </div>
 
     </div>
 </div>
 
-<script>
-document.getElementById("loginForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const studentId = document.getElementById("studentId").value.trim();
-
-    if (!studentId) {
-        alert("Please enter your Student ID.");
-        return;
-    }
-
-    localStorage.setItem("studentId", studentId);
-
-    // Future page
-    window.location.href = "checkout.html";
-});
-</script>
+<script src="login.js"></script>
 
 </body>
 </html>

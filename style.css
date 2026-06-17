@@ -202,6 +202,13 @@ button:hover {
     font-size: 0.95rem;
 }
 
+.status-text {
+    margin-top: 14px;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.4;
+}
+
 @media (max-width: 500px) {
     .login-card {
         padding: 28px;
@@ -271,6 +278,10 @@ button:hover {
 }
 
 #fakeScanBtn {
+    width: 100%;
+}
+
+#scanNfcBtn {
     width: 100%;
 }
 
